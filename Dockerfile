@@ -1,15 +1,13 @@
 FROM node:18-alpine as build-step
 
-WORKDIR /app
+RUN mkdir -p /dist/sample-prj
 
-COPY package.json ./
+WORKDIR /dist/sample-prj
 
-RUN npm cache clean
+COPY package.json /dist/sample-prj
 
 RUN npm install
 
-COPY ..
+COPY . /dist/sample-prj
 
-EXPOSE 4200
-
-CMD ["npm", "start"]
+RUN npm run build --prod
