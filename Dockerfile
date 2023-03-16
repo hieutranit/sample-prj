@@ -1,23 +1,17 @@
+# base image
+FROM node:latest as node
 
-# Stage 1
+# set working directory
+WORKDIR /app
 
-FROM node:18-alpine as build-step
-
-RUN mkdir -p /dist/sample-prj
-
-WORKDIR /dist/sample-prj
-
-COPY package.json /dist/sample-prj
-
+# install and cache app dependencies
+COPY . .
 RUN npm install
-
-COPY . /dist/sample-prj
-
 RUN npm run build --prod
 
+FROM nginx:alpine
+COPY --from=node /app/dist/sample-prj /usr/share/ngnix/html
  
-# Stage 2
 
-FROM nginx:1.17.1-alpine
-
-COPY --from=build-step /dist/sample-prj /usr/share/nginx/html
+FROM nginx:alpine
+COPY --from=node /app/dist/sample-prj /usr/share/ngnix/html
