@@ -11,7 +11,3 @@ RUN npm run build --prod
 
 FROM nginx:alpine
 COPY --from=node /app/dist/sample-prj /usr/share/ngnix/html
- 
-
-FROM nginx:alpine
-COPY --from=node /app/dist/sample-prj /usr/share/ngnix/html
