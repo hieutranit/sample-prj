@@ -8,4 +8,5 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class AppComponent {
   title = 'sample-prj';
+  production = environment.production;
 }

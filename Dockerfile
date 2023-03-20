@@ -1,19 +1,14 @@
-# # Stage 1
-
-FROM node:18-alpine as build-step
+FROM node:18-alpine as build-stage
 
 WORKDIR /app
 
-COPY package.json /app/
+COPY package*.json /app/
 
 RUN npm install
 
-COPY . /app/
+COPY ./ /app/
 
-CMD ["npm", "start"]
+RUN npm run build -- --output-path=./dist/out
 
-# # Stage 2
-
-FROM nginx:1.17.1-alpine
-
-COPY --from=build-step/app/dist/out/ /usr/share/nginx/html
+FROM nginx:latest
+COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
