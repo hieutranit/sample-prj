@@ -10,6 +10,10 @@ RUN npm install
 
 COPY . /dist/sample-prj
 
-EXPOSE 4200
-
 CMD ["npm", "start"]
+
+# # Stage 2
+
+FROM nginx:1.17.1-alpine
+
+COPY --from=build-step /dist/sample-prj /usr/share/nginx/html
